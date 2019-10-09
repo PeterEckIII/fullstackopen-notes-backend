@@ -3,8 +3,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static('build'));
+app.use(cors());
 
 let notes = [
     {
@@ -28,7 +29,7 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hello world!</h1>')
+    res.send('./build/index.html');
 })
 
 app.get('/notes', (req, res) => {
