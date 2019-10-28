@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const Note = require('./models/note');
 
 app.use(bodyParser.json());
@@ -32,20 +31,26 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
-    res.send('./build/index.html');
+    res.send('<h1>Hello World</h1>');
 })
 
 app.get('/api/notes', (req, res) => {
-    Note.find({}).then(notes => {
-        res.json(notes.map(note => note.toJSON()));
-    })
+    Note
+        .find({})
+        .then(notes => {
+            res.json(notes.map(note => note.toJSON()));
+        })
+        .catch(e => `Could not fetch notes: ${ e }`)
 })
 
 app.get('/api/notes/:id', (req, res) => {
-    Note.findById(req.params.id).then(note => {
-        res.json(note.toJSON());
-    })
-})
+    Note
+        .findById(req.params.id)
+        .then(note => {
+            res.json(note.toJSON());
+        })
+        .catch(e => `Error finding ${ req.params.id }`)
+});
 
 const generateId = () => {
     const maxId = notes.length > 0
@@ -67,19 +72,26 @@ app.post('/api/notes', (req, res) => {
         important: body.important || false,
         date: new Date(),
     })
-    note.save().then(savedNote => {
-        res.json(savedNote.toJSON());
-    })
+    note
+        .save()
+        .then(savedNote => {
+            res.json(savedNote.toJSON())
+        })
+        .catch(e => `Error saving note ${ e }`);
 })
 
 app.delete('/api/notes/:id', (req, res) => {
-    const id = Number(req.params.id);
-    notes = notes.filter(note => note.id !== id);
+    Note
+        .findByIdAndRemove(req.params.id)
+        .then(result => {
+            res.status(204).end()
+        })
+        .catch(e => `Error removing note ${ e }`)
     res.status(204).end();
 })
 
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`)
+    console.log(`Server running on ${ PORT }`)
 });
