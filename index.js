@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const Note = require('./models/note');
 
 app.use(bodyParser.json());
@@ -81,5 +80,5 @@ app.delete('/api/notes/:id', (req, res) => {
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => {
-    console.log(`Server running on ${PORT}`)
+    console.log(`Server running on ${ PORT }`)
 });
