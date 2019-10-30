@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { url } = require('../secret.js');
+const url = require('../secret.js');
 
 console.log(`Connecting to ${ url }`);
 
