@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+const url = require('../secret');
 
-const url = process.env.MONGODB_URI.toString();
+const url = url;
 
 console.log(`Connecting to ${ url }`);
 
