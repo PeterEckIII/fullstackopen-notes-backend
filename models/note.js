@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const url = require('../secret.js');
+
+const url = 'mongodb+srv://peter_eck:MarmaladeDaydream22!@cluster0-2gtvn.mongodb.net/test?retryWrites=true&w=majority'
 
 console.log(`Connecting to ${ url }`);
 
