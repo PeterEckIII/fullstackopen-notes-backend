@@ -38,9 +38,7 @@ app.get('/api/notes', (req, res) => {
     Note
         .find({})
         .then(notes => {
-            notes.map(note => {
-                res.json(note)
-            });
+            console.log(notes.map(note => note.content))
         })
         .catch(e => `Could not fetch notes: ${ e }`)
 })
