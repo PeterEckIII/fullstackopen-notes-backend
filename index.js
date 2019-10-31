@@ -3,7 +3,6 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const Note = require('./models/note');
 
 app.use(bodyParser.json());
 app.use(express.static('build'));
