@@ -38,7 +38,9 @@ app.get('/api/notes', (req, res) => {
     Note
         .find({})
         .then(notes => {
-            res.json(notes.map(note => note.toJSON()));
+            notes.map(note => {
+                res.json(note)
+            });
         })
         .catch(e => `Could not fetch notes: ${ e }`)
 })
