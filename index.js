@@ -30,7 +30,7 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
-    res.sendFile('./build/index.html');
+    res.sendFile(__dirname + './build/index.html');
 })
 
 app.get('/api/notes', (req, res) => {
