@@ -35,21 +35,13 @@ app.get('/', (req, res) => {
 })
 
 app.get('/api/notes', (req, res) => {
-    Note
-        .find({})
-        .then(notes => {
-            console.log(notes.map(note => note.content))
-        })
-        .catch(e => `Could not fetch notes: ${ e }`)
+    res.json(notes);
 })
 
 app.get('/api/notes/:id', (req, res) => {
-    Note
-        .findById(req.params.id)
-        .then(note => {
-            res.json(note.toJSON());
-        })
-        .catch(e => `Error finding ${ req.params.id }`)
+    const id = Number(req.params.id);
+    const note = notes.find(note => note.id === id)
+    note ? res.json(note) : res.status(404).end();
 });
 
 const generateId = () => {
@@ -57,7 +49,6 @@ const generateId = () => {
         ? Math.max(...notes.map(note => note.id))
         : 0
     return maxId + 1;
-
 }
 
 app.post('/api/notes', (req, res) => {
@@ -67,26 +58,19 @@ app.post('/api/notes', (req, res) => {
             error: 'content missing'
         })
     }
-    const note = new Note({
+    const note = {
         content: body.content,
         important: body.important || false,
         date: new Date(),
-    })
-    note
-        .save()
-        .then(savedNote => {
-            res.json(savedNote.toJSON())
-        })
-        .catch(e => `Error saving note ${ e }`);
+        id: generateId()
+    }
+    notes = [ ...notes, note ];
+    res.json(note);
 })
 
 app.delete('/api/notes/:id', (req, res) => {
-    Note
-        .findByIdAndRemove(req.params.id)
-        .then(result => {
-            res.status(204).end()
-        })
-        .catch(e => `Error removing note ${ e }`)
+    const id = Number(req.params.id);
+    notes = notes.filter(note => note.id !== id);
     res.status(204).end();
 })
 
