@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 app.use(bodyParser.json());
-app.use(express.static('build'));
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
 
 let notes = [
@@ -30,7 +30,7 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(build, 'index.html'));
+    res.sendFile(__dirname + './build/index.html');
     // Issue is with this line - try to get the html file served for this route
 })
 
