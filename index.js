@@ -30,7 +30,8 @@ let notes = [
 ]
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + './build/index.html');
+    res.sendFile(path.join(build, 'index.html'));
+    // Issue is with this line - try to get the html file served for this route
 })
 
 app.get('/api/notes', (req, res) => {
