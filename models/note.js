@@ -1,9 +1,11 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
-const url = process.env.MONGO_URI
+// Stopping Point: Heroku is having a problem with MongoDBs URI set here via environment variable
+// Note: This works in development, but not deployed to prod - must be a Heroku thing?
+console.log(process.env.MONGO_URI);
 
-mongoose.connect(url, { useNewUrlParser: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
     .then(result => {
         console.log('Connected to MongoDB')
     })
