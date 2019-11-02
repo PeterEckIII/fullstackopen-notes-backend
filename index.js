@@ -31,7 +31,6 @@ app.get('/api/notes/:id', (req, res) => {
         })
 });
 
-
 const generateId = () => {
     const maxId = notes.length > 0
         ? Math.max(...notes.map(note => note.id))
