@@ -12,7 +12,6 @@ app.use(cors());
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + './build/index.html');
-    // Issue is with this line - try to get the html file served for this route
 })
 
 app.get('/api/notes', (req, res) => {
@@ -23,20 +22,32 @@ app.get('/api/notes', (req, res) => {
         })
 })
 
-app.get('/api/notes/:id', (req, res) => {
+app.get('/api/notes/:id', (req, res, next) => {
     Note
         .findById(req.params.id)
         .then(note => {
-            res.json(note.toJSON())
+            note
+                ? res.json(note.toJSON())
+                : res.status(404).end()
         })
+        .catch(e => next(e))
 });
 
-const generateId = () => {
-    const maxId = notes.length > 0
-        ? Math.max(...notes.map(note => note.id))
-        : 0
-    return maxId + 1;
-}
+app.put('/api/notes/:id', (req, res, next) => {
+    const body = req.body;
+
+    const note = {
+        content: body.content,
+        important: body.important
+    }
+
+    Note
+        .findByIdAndUpdate(req.params.id, note, { new: true })
+        .then(updatedNote => {
+            res.json(updatedNote.toJSON())
+        })
+        .catch(e => next(e))
+})
 
 app.post('/api/notes', (req, res) => {
     const body = req.body;
@@ -57,11 +68,30 @@ app.post('/api/notes', (req, res) => {
         })
 })
 
-app.delete('/api/notes/:id', (req, res) => {
-    const id = Number(req.params.id);
-    notes = notes.filter(note => note.id !== id);
-    res.status(204).end();
+app.delete('/api/notes/:id', (req, res, next) => {
+    Note.findByIdAndRemove(req.params.id)
+        .then(result => {
+            res.status(204).end();
+        })
+        .catch(e => next(e))
 })
+
+const unknownEndpoint = (req, res) => {
+    res.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint);
+
+const errorHandler = (error, req, res, next) => {
+    console.log(error.message)
+    if (error.name === 'Cast Error' && error.kind === 'ObjectID') {
+        return res.status(404).send({ error: 'Malformatted ID' })
+    }
+
+    next(error)
+}
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
