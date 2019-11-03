@@ -36,6 +36,7 @@ app.get('/api/notes/:id', (req, res, next) => {
 app.put('/api/notes/:id', (req, res, next) => {
     const body = req.body;
 
+
     const note = {
         content: body.content,
         important: body.important
