@@ -1,6 +1,8 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 
+mongoose.set('useFindAndModify', false);
+
 // Stopping Point: Heroku is having a problem with MongoDBs URI set here via environment variable
 // Note: This works in development, but not deployed to prod - must be a Heroku thing?
 console.log(process.env.MONGO_URI);
