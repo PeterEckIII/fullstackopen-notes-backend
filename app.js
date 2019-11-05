@@ -16,8 +16,6 @@ mongoose
     .catch(e => console.warn(`Error connecting to MongoDB: ${ error.message }`))
 
 
-
-
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
