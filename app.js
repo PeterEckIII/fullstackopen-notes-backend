@@ -7,13 +7,14 @@ const path = require('path');
 const notesRouter = require('./controllers/notes');
 const middleware = require('./utils/middleware');
 const mongoose = require('mongoose');
+const logger = require('./utils/logger');
 
-console.log(`Connecting to ${ config.MONGO_URI }`);
+logger.info(`Connecting to ${ config.MONGO_URI }`);
 
 mongoose
     .connect(config.MONGO_URI, { useNewUrlParser: true })
-    .then(() => console.log(`Connected to MongoDB`))
-    .catch(e => console.warn(`Error connecting to MongoDB: ${ error.message }`))
+    .then(() => logger.info(`Connected to MongoDB`))
+    .catch(e => logger.error(`Error connecting to MongoDB: ${ error.message }`))
 
 
 app.use(bodyParser.json());
