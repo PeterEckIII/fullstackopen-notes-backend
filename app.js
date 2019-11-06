@@ -14,14 +14,14 @@ logger.info(`Connecting to ${ config.MONGO_URI }`);
 mongoose
     .connect(config.MONGO_URI, { useNewUrlParser: true })
     .then(() => logger.info(`Connected to MongoDB`))
-    .catch(e => logger.error(`Error connecting to MongoDB: ${ error.message }`))
+    .catch(e => logger.error(`Error connecting to MongoDB: ${ e.message }`))
 
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
 app.use(middleware.requestLogger);
-app.use('./api/notes', notesRouter);
+app.use('/api/notes', notesRouter);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 
