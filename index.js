@@ -4,14 +4,12 @@ const config = require('./utils/config');
 
 const server = http.createServer(app);
 
-
-const PORT = config.MONGO_URI;
+const PORT = config.PORT;
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + './build/index.html');
 })
 
-
-server.listen(config.PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server running on ${ PORT }`)
 });
